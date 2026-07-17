@@ -1,3 +1,0 @@
-"""ITF"""
-
-print("Hello ITF!")
