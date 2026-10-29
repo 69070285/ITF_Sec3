@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ระบบสุ่มเมนูอาหาร</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Prompt', sans-serif;
+    }
+    body {
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #333;
+    }
+    .navbar {
+      width: 100%;
+      background: #ffffff;
+      padding: 1rem 2rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .navbar .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #ff5722;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .navbar ul {
+      display: flex;
+      list-style: none;
+      gap: 1.5rem;
+    }
+    .navbar ul li a {
+      text-decoration: none;
+      color: #555;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    .navbar ul li a:hover {
+      color: #ff5722;
+    }
+    .container {
+      max-width: 600px;
+      width: 90%;
+      margin: 2.5rem auto;
+      text-align: center;
+    }
+    .header-title {
+      margin-bottom: 1.5rem;
+    }
+    .header-title h1 {
+      font-size: 2rem;
+      color: #222;
+      margin-bottom: 0.3rem;
+    }
+    .header-title p {
+      color: #666;
+      font-size: 0.95rem;
+    }
+    .food-card {
+      background: #ffffff;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      margin-bottom: 2rem;
+    }
+    .food-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+    }
+    .img-container {
+      width: 100%;
+      height: 280px;
+      overflow: hidden;
+      position: relative;
+      background-color: #eee;
+    }
+    .food-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .food-info {
+      padding: 1.8rem;
+      text-align: left;
+    }
+
+    .food-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.8rem;
+    }
+    .food-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+    .food-price {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #2e7d32;
+      background: #e8f5e9;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+    }
+    .food-desc {
+      color: #666;
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+    .btn-random {
+      background: linear-gradient(135deg, #ff7043 0%, #ff5722 100%);
+      color: #ffffff;
+      border: none;
+      padding: 1rem 2.5rem;
+      font-size: 1.15rem;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(255, 87, 34, 0.35);
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .btn-random:hover {
+      background: linear-gradient(135deg, #ff5722 0%, #e64a19 100%);
+      box-shadow: 0 12px 25px rgba(255, 87, 34, 0.45);
+      transform: translateY(-2px);
+    }
+    .btn-random:active {
+      transform: translateY(1px);
+      box-shadow: 0 5px 12px rgba(255, 87, 34, 0.3);
+    }
+    @media (max-width: 480px) {
+      .navbar {
+        padding: 1rem;
+      }
+      .navbar ul {
+        display: none;
+      }
+      .img-container {
+        height: 220px;
+      }
+      .food-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">
+      <i class="fa-solid => fa-utensils"></i> FoodRandom
+    </div>
+    <ul>
+      <li><a href="#">หน้าแรก</a></li>
+      <li><a href="#">เมนูทั้งหมด</a></li>
+    </ul>
+  </nav>
+  <div class="container">
+    <div class="header-title">
+      <h1>วันนี้กินอะไรดีน้อออ</h1>
+      <p>คิดไม่ออก ไม่รู้จะกินอะไร มีระบบ Random ให้นะ อิอิ</p>
+    </div>
+    <div class="food-card">
+      <div class="img-container">
+        <img id="food-img" class="food-img" src="" alt="รูปเมนูอาหาร">
+      </div>
+      <div class="food-info">
+        <div class="food-header">
+          <h2 id="food-title" class="food-title">กำลังโหลด...</h2>
+          <span id="food-price" class="food-price">0 ฿</span>
+        </div>
+        <p id="food-desc" class="food-desc">รายละเอียดเมนูอาหารจะปรากฏตรงนี้</p>
+      </div>
+    </div>
+    <button class="btn-random" onclick="randomMenu()">
+      <i class="fa-solid fa-dice"></i> สุ่มเมนูอาหาร
+    </button>
+  </div>
+  <script>
+    const foodList = [
+      {
+        name: "Pizza",
+        description: "พิซซ่าเอาใจสายเนื้อ รวมเครื่องแน่นทั้งเพปเพอโรนี เบคอน ไส้กรอกอิตาเลียน และเนื้อบด บนซอสมะเขือเทศเข้มข้น",
+        price: "399 บาท",
+        image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D"
+      },
+      {
+        name: "Steak",
+        description: "สเต๊กเนื้อริบอายติดมัน แทรกไขมันลายหินอ่อน เนื้อนุ่มย่างหอมเนยสดกระเทียมและโรสแมรี่",
+        price: "229 บาท",
+        image: "https://plus.unsplash.com/premium_photo-1723672929404-36ba6ed8ab50?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D"
+      },
+      {
+        name: "Spaghetti",
+        description: "ข้าวผัดเม็ดสวย หอมกลิ่นกระทะ ใส่เนื้อปูก้อนแน่นๆ รสชาติกลมกล่อม ทานคู่กับพริกน้ำปลาและมะนาวสด",
+        price: "99 บาท",
+        image: "https://images.unsplash.com/photo-1627042633145-b780d842ba45?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D"
+      },
+      {
+        name: "Kebab",
+        description: "เคบับเนื้อหรือไก่หมักเครื่องเทศเสียบไม้ย่าง หมุนหั่นชิ้นบาง ห่อด้วยแป้งพิต้านุ่มๆ พร้อมผักสดและซอสการ์ลิกครีมมี่",
+        price: "89 บาท",
+        image: "https://plus.unsplash.com/premium_photo-1664478244517-513dc18af854?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D"
+      },
+      {
+        name: "Mushroom Soup",
+        description: "ซุปครีมเห็ดสไตล์คลาสสิก เคี่ยวเห็ดแชมปิญองสดกับครีมแท้หอมมันและเนยสด รสชาติกลมกล่อมละมุนลิ้น",
+        price: "69 บาท",
+        image: "https://plus.unsplash.com/premium_photo-1669831178095-005ed789250a?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D"
+      },
+      {
+        name: "Mashed Potatoes",
+        description: "มันบดเนื้อเนียนนุ่ม หอมกลิ่นเนยสด กระเทียมอบ และนมสด รสชาติกลมกล่อมกลมกลืนตามสไตล์คลาสสิก",
+        price: "59 บาท",
+        image: "https://images.unsplash.com/photo-1707616954324-99c89a78a20d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D"
+      }
+    ];
+
+    let lastIndex = -1;
+
+    function randomMenu() {
+      const imgElement = document.getElementById("food-img");
+      const titleElement = document.getElementById("food-title");
+      const priceElement = document.getElementById("food-price");
+      const descElement = document.getElementById("food-desc");
+      imgElement.style.opacity = "0.3";
+
+      setTimeout(() => {
+        let randomIndex;
+        do {
+          randomIndex = Math.floor(Math.random() * foodList.length);
+        } while (randomIndex === lastIndex && foodList.length > 1);
+
+        lastIndex = randomIndex;
+        const selectedFood = foodList[randomIndex];
+        imgElement.src = selectedFood.image;
+        titleElement.innerText = selectedFood.name;
+        priceElement.innerText = selectedFood.price;
+        descElement.innerText = selectedFood.description;
+        imgElement.style.opacity = "1";
+      }, 150);
+    }
+    window.onload = randomMenu;
+  </script>
+</body>
+</html>
